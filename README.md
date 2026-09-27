@@ -4,7 +4,7 @@
 
 An end-to-end machine learning workbench for exploring datasets and training classification or regression models with no code.
 
-**[View Live Demo →](https://sankalpvaish.github.io/Django/)**
+**[View Live Demo →](https://sankalpvaish.github.io/Django_Graphs/)**
 
 ## What it does
 
