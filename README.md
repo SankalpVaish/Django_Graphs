@@ -104,4 +104,4 @@ Copyright © 2026 Sankalp Vaish. All rights reserved.
 
 ## Credits
 
-Built by [Leon Smith](https://www.linkedin.com/in/leon-smith-356771290)
+Built by [Sankalp Vaish]
