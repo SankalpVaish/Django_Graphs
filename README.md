@@ -1,5 +1,7 @@
 # Graphs
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 An end-to-end machine learning workbench for exploring datasets and training classification or regression models with no code.
 
 **[View Live Demo →](https://sankalpvaish.github.io/Django/)**
@@ -92,6 +94,14 @@ python build_demo.py
 
 This renders every page with a sample dataset and rewrites URLs for GitHub Pages.
 
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Copyright
+
+Copyright © 2026 Sankalp Vaish. All rights reserved.
+
 ## Credits
 
-Built by [Sankalp Vaish]
+Built by [Leon Smith](https://www.linkedin.com/in/leon-smith-356771290)
