@@ -94,4 +94,4 @@ This renders every page with a sample dataset and rewrites URLs for GitHub Pages
 
 ## Credits
 
-Built by [Leon Smith](https://www.linkedin.com/in/leon-smith-356771290)
+Built by [Sankalp Vaish]
