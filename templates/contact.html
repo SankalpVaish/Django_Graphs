@@ -1,0 +1,49 @@
+{% extends "master.html" %}
+
+{% block title %}Contact{% endblock %}
+{% block main_class %}app-main--narrow{% endblock %}
+
+{% block content %}
+
+<div class="page-head">
+  <span class="page-head__eyebrow">Support</span>
+  <h1>Get in touch</h1>
+  <p class="page-head__sub">
+    Questions, feedback or a feature you wish existed &mdash; we would like to hear it.
+  </p>
+</div>
+
+<div class="card">
+  <div class="card__body">
+    <dl class="detail-list">
+      <div>
+        <i class="bi bi-envelope"></i>
+        <div>
+          <dt>Email</dt>
+          <dd><a href="mailto:support@mlgraphs.com">support@mlgraphs.com</a></dd>
+        </div>
+      </div>
+      <div>
+        <i class="bi bi-mortarboard"></i>
+        <div>
+          <dt>Intended use</dt>
+          <dd>Learning, experimentation and academic work</dd>
+        </div>
+      </div>
+      <div>
+        <i class="bi bi-chat-square-text"></i>
+        <div>
+          <dt>Most useful feedback</dt>
+          <dd>Usability friction, confusing visualisations, and model evaluation gaps</dd>
+        </div>
+      </div>
+    </dl>
+  </div>
+  <div class="card__foot">
+    <span style="font-size: 0.8125rem; color: var(--text-muted);">
+      This project is actively evolving &mdash; suggestions genuinely shape what gets built next.
+    </span>
+  </div>
+</div>
+
+{% endblock %}

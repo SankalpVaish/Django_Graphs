@@ -1,0 +1,41 @@
+{% extends "master.html" %}
+{% load bootstrap5 %}
+
+{% block title %}Create account{% endblock %}
+
+{% block content %}
+<div class="auth-shell">
+
+  <div class="auth-aside">
+    <h2>Start your first analysis in minutes.</h2>
+    <p>Create an account to upload datasets, save your preferences and keep a history of every model you train.</p>
+    <ul>
+      <li><i class="bi bi-check-circle-fill"></i> <span>No setup &mdash; bring a CSV and go</span></li>
+      <li><i class="bi bi-check-circle-fill"></i> <span>Classification and regression workflows</span></li>
+      <li><i class="bi bi-check-circle-fill"></i> <span>Preferences remembered between sessions</span></li>
+    </ul>
+  </div>
+
+  <div class="auth-card">
+    <div class="auth-card__head">
+      <h1>Create your account</h1>
+      <p>It takes about thirty seconds.</p>
+    </div>
+
+    <form method="post">
+      {% csrf_token %}
+      {% bootstrap_form form %}
+
+      <button class="btn btn-primary btn-block" type="submit">
+        <i class="bi bi-person-plus"></i> Create account
+      </button>
+    </form>
+
+    <div class="auth-meta">
+      <span>Already registered?</span>
+      <a href="{% url 'login' %}">Sign in</a>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

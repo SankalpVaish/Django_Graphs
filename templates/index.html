@@ -1,0 +1,127 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block title %}Data Analysis{% endblock %}
+
+{% block content %}
+
+<div class="page-head">
+  <span class="page-head__eyebrow">Step 1 of 3</span>
+  <h1>Data Analysis</h1>
+  <p class="page-head__sub">
+    Upload a CSV to get started, then build quick exploratory charts to see how
+    your features relate to one another.
+  </p>
+</div>
+
+<div class="upload-grid">
+
+  <div class="card">
+    <div class="card__head">
+      <div>
+        <h2>Upload a dataset</h2>
+        <p>The first column is treated as the index.</p>
+      </div>
+      {% if loaded %}<span class="pill pill--success"><i class="bi bi-check-circle-fill"></i> Loaded</span>{% endif %}
+    </div>
+    <div class="card__body">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label class="dropzone" for="datasetFile">
+          <span class="dropzone__icon"><i class="bi bi-filetype-csv"></i></span>
+          <span class="dropzone__title">Choose a CSV file</span>
+          <span class="dropzone__hint">Comma-separated values, with a header row</span>
+          <input type="file" name="myfile" id="datasetFile" accept=".csv,text/csv" required>
+        </label>
+        <button class="btn btn-primary btn-block mt-3" type="submit">
+          <i class="bi bi-upload"></i> Upload and continue
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card__head">
+      <h2>Before you upload</h2>
+    </div>
+    <div class="card__body">
+      <ul class="spec-list">
+        <li><i class="bi bi-check-circle-fill"></i> <span>A header row naming each column</span></li>
+        <li><i class="bi bi-check-circle-fill"></i> <span>One identifier or index column first</span></li>
+        <li><i class="bi bi-check-circle-fill"></i> <span>Numeric and categorical features are both fine</span></li>
+        <li><i class="bi bi-check-circle-fill"></i> <span>A <code>Name</code> column, if present, is dropped automatically</span></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+{% if loaded %}
+<div class="section-head">
+  <div>
+    <h2>Build a chart</h2>
+    <p>Pick a chart type and the columns to plot.</p>
+  </div>
+</div>
+
+<div class="card reveal">
+  <div class="card__body">
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="control-row">
+        <div>
+          <label class="form-label" for="graph">Chart type</label>
+          <select id="graph" name="graph" class="form-select">
+            {% for g in graphs %}
+            <option value="{{ g }}" {% if g == graph %}selected{% endif %}>{{ g|capfirst }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div id="opt1">
+          <label class="form-label" for="opt1Select">X axis</label>
+          <select id="opt1Select" name="opt1" class="form-select">
+            {% for col in l %}
+            <option value="{{ col }}" {% if col == x_name %}selected{% endif %}>{{ col }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div id="opt2">
+          <label class="form-label" for="opt2Select">Y axis</label>
+          <select id="opt2Select" name="opt2" class="form-select">
+            {% for col in l %}
+            <option value="{{ col }}" {% if col == y_name %}selected{% endif %}>{{ col }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div>
+          <button class="btn btn-primary btn-block" type="submit">
+            <i class="bi bi-bar-chart-line"></i> Plot
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  {% if flag %}
+  <div class="card__body" style="border-top: 1px solid var(--border);">
+    <div class="chart-frame">
+      <img src="{% static 'images/tax.jpeg' %}?v={% now 'U' %}"
+           alt="{{ graph|default:'Generated' }} chart of the selected columns">
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="card__foot d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <span class="text-muted" style="font-size: 0.8125rem;">Happy with the data? Move on to profiling and model training.</span>
+    <a class="btn btn-sm" href="{% url 'GraphPage' %}">
+      Data Understanding <i class="bi bi-arrow-right"></i>
+    </a>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

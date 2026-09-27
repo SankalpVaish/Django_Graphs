@@ -1,0 +1,68 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block title %}Interactive Plot Controls{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+
+  <h2 class="mb-4">Interactive Plot Controls</h2>
+
+  <!-- Controls -->
+  <div class="card p-3 mb-4">
+    <form method="get" id="plotForm">
+
+      <div class="row">
+
+        <div class="col-md-3">
+          <label>Plot Type</label>
+          <select name="plot" class="form-control">
+            <option value="scatter" {% if plot_type == "scatter" %}selected{% endif %}>Scatter</option>
+            <option value="line" {% if plot_type == "line" %}selected{% endif %}>Line</option>
+            <option value="bar" {% if plot_type == "bar" %}selected{% endif %}>Bar</option>
+            <option value="hist" {% if plot_type == "hist" %}selected{% endif %}>Histogram</option>
+          </select>
+        </div>
+
+        <div class="col-md-3">
+          <label>X Axis</label>
+          <select name="x" class="form-control">
+            <option>Feature 1</option>
+            <option>Feature 2</option>
+            <option>Feature 3</option>
+          </select>
+        </div>
+
+        <div class="col-md-3">
+          <label>Y Axis</label>
+          <select name="y" class="form-control">
+            <option>Feature 2</option>
+            <option>Feature 3</option>
+            <option>Target</option>
+          </select>
+        </div>
+
+        <div class="col-md-3 d-flex align-items-end">
+          <button class="btn btn-primary w-100">
+            Update Plot
+          </button>
+        </div>
+
+      </div>
+
+    </form>
+  </div>
+
+  <!-- Plot Area -->
+  <div class="card p-4 text-center">
+    <h5>{{ plot_type|title }} Plot</h5>
+    <p>X: {{ x_axis }} | Y: {{ y_axis }}</p>
+
+    <!-- Placeholder -->
+    <img src="{% static 'images/placeholder_plot.png' %}"
+         class="img-fluid rounded"
+         alt="Plot">
+  </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,304 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block title %}Data Understanding{% endblock %}
+
+{% block content %}
+
+{% if flag %}
+
+<div class="page-head">
+  <span class="page-head__eyebrow">Step 2 of 3</span>
+  <h1>Data Understanding</h1>
+  <p class="page-head__sub">
+    A profile of your dataset, its distributions and outliers &mdash; then choose
+    how to preprocess it and which model to train.
+  </p>
+</div>
+
+<!-- DATASET PROFILE -->
+<div class="stat-grid">
+  <div class="stat">
+    <div class="stat__label"><i class="bi bi-table"></i> Rows</div>
+    <div class="stat__value">{{ nrow }}</div>
+  </div>
+  <div class="stat">
+    <div class="stat__label"><i class="bi bi-layout-three-columns"></i> Columns</div>
+    <div class="stat__value">{{ ncol }}</div>
+  </div>
+  <div class="stat {% if MV %}stat--flag{% else %}stat--ok{% endif %}">
+    <div class="stat__label"><i class="bi bi-patch-question"></i> Missing values</div>
+    <div class="stat__value">{{ MV }}</div>
+    <div class="stat__hint">{% if MV %}Imputed during preprocessing{% else %}Nothing to impute{% endif %}</div>
+  </div>
+  <div class="stat {% if DV %}stat--flag{% else %}stat--ok{% endif %}">
+    <div class="stat__label"><i class="bi bi-copy"></i> Duplicate rows</div>
+    <div class="stat__value">{{ DV }}</div>
+    <div class="stat__hint">{% if DV %}Consider removing these{% else %}All rows unique{% endif %}</div>
+  </div>
+  <div class="stat">
+    <div class="stat__label"><i class="bi bi-bullseye"></i> Task</div>
+    <div class="stat__value" style="font-size: 1.125rem;">{{ mode }}</div>
+  </div>
+</div>
+
+<div class="card mt-3">
+  <div class="card__head">
+    <div>
+      <h2>Columns</h2>
+      <p>Features available after encoding.</p>
+    </div>
+    <span class="pill">{{ ncol }} total</span>
+  </div>
+  <div class="card__body">
+    <ul class="chip-list">
+      {% for col in columnsName %}<li class="chip">{{ col }}</li>{% endfor %}
+    </ul>
+  </div>
+</div>
+
+<!-- DISTRIBUTIONS -->
+<div class="section-head">
+  <div>
+    <h2>Distributions</h2>
+    <p>Histograms for each numerical feature.</p>
+  </div>
+</div>
+
+<div class="card reveal">
+  <div class="card__body">
+    {% if columns %}
+    <div class="chart-grid is-collapsed" id="histGrid">
+      {% for col in columns %}
+      <div class="chart-tile">
+        <img src="{% static col %}?v={% now 'U' %}" alt="Histogram of a numerical feature" loading="lazy">
+      </div>
+      {% endfor %}
+    </div>
+    <div class="chart-expand">
+      <button class="btn btn-sm" type="button" data-expand="histGrid" aria-expanded="false" aria-controls="histGrid">
+        <i class="bi bi-chevron-down"></i> <span data-expand-label>Show more</span>
+      </button>
+    </div>
+    {% else %}
+    <div class="empty">
+      <div class="empty__icon"><i class="bi bi-bar-chart"></i></div>
+      <h3>No numerical features</h3>
+      <p>This dataset has no continuous columns to plot a histogram for.</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<!-- CATEGORICAL BREAKDOWN -->
+<div class="section-head">
+  <div>
+    <h2>Categorical breakdown</h2>
+    <p>Class balance for each categorical feature.</p>
+  </div>
+</div>
+
+<div class="card reveal">
+  <div class="card__body">
+    {% if pie %}
+    <div class="chart-grid is-collapsed" id="pieGrid">
+      {% for col in pie %}
+      <div class="chart-tile">
+        <img src="{% static col %}?v={% now 'U' %}" alt="Category share for a categorical feature" loading="lazy">
+      </div>
+      {% endfor %}
+    </div>
+    <div class="chart-expand">
+      <button class="btn btn-sm" type="button" data-expand="pieGrid" aria-expanded="false" aria-controls="pieGrid">
+        <i class="bi bi-chevron-down"></i> <span data-expand-label>Show more</span>
+      </button>
+    </div>
+    {% else %}
+    <div class="empty">
+      <div class="empty__icon"><i class="bi bi-pie-chart"></i></div>
+      <h3>No categorical features</h3>
+      <p>Every column in this dataset is numerical.</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<!-- OUTLIERS -->
+<div class="section-head">
+  <div>
+    <h2>Outlier detection</h2>
+    <p>Select a boxplot to clip its outliers to the column mean.</p>
+  </div>
+</div>
+
+<div class="card reveal">
+  <div class="card__body">
+    {% if box %}
+    <div class="chart-grid is-collapsed" id="boxGrid">
+      {% for col in box %}
+      <a class="chart-tile" href="{% url 'Outlier_Analysis' col %}">
+        <img src="{% static col %}?v={% now 'U' %}" alt="Boxplot showing the spread of a feature" loading="lazy">
+      </a>
+      {% endfor %}
+    </div>
+    <div class="chart-expand">
+      <button class="btn btn-sm" type="button" data-expand="boxGrid" aria-expanded="false" aria-controls="boxGrid">
+        <i class="bi bi-chevron-down"></i> <span data-expand-label>Show more</span>
+      </button>
+    </div>
+    {% else %}
+    <div class="empty">
+      <div class="empty__icon"><i class="bi bi-box"></i></div>
+      <h3>No boxplots available</h3>
+      <p>Outlier detection needs at least one numerical column.</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<!-- CORRELATION -->
+<div class="section-head">
+  <div>
+    <h2>Correlation</h2>
+    <p>How strongly each pair of numerical features moves together.</p>
+  </div>
+</div>
+
+<div class="card reveal">
+  <div class="card__body">
+    <div class="chart-frame">
+      <img src="{% static 'images/corr.jpeg' %}?v={% now 'U' %}"
+           alt="Correlation matrix heatmap of all numerical features">
+    </div>
+  </div>
+</div>
+
+<!-- PREPROCESSING -->
+<div class="section-head">
+  <div>
+    <h2>Preprocessing</h2>
+    <p>These settings are applied when you start a training run.</p>
+  </div>
+</div>
+
+<div class="card reveal">
+  <div class="card__body">
+
+    {% with pref_split=request.session.default_split|default:"20" pref_scaler=request.session.scaler|default:"minmax" %}
+    <div class="field-group">
+      <div class="split-readout">
+        <label class="form-label mb-0" for="splitSlider">Test set size</label>
+        <span class="split-readout__value" id="splitValue">{{ pref_split }}%</span>
+      </div>
+      <input type="range" id="splitSlider" min="5" max="50" value="{{ pref_split }}" step="5">
+      <div class="split-scale">
+        <span>5% &mdash; more training data</span>
+        <span>50% &mdash; more validation data</span>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="form-label">Feature scaling</label>
+      <div class="option-grid" role="group" aria-label="Feature scaling method">
+        <button type="button" class="option-card {% if pref_scaler == 'minmax' %}is-active{% endif %}"
+                data-scaler="minmax" aria-pressed="{% if pref_scaler == 'minmax' %}true{% else %}false{% endif %}">
+          <h4>Min-Max</h4>
+          <small>Rescale to 0 &ndash; 1</small>
+        </button>
+        <button type="button" class="option-card {% if pref_scaler == 'standard' %}is-active{% endif %}"
+                data-scaler="standard" aria-pressed="{% if pref_scaler == 'standard' %}true{% else %}false{% endif %}">
+          <h4>Standard</h4>
+          <small>&mu; = 0, &sigma; = 1</small>
+        </button>
+        <button type="button" class="option-card {% if pref_scaler == 'robust' %}is-active{% endif %}"
+                data-scaler="robust" aria-pressed="{% if pref_scaler == 'robust' %}true{% else %}false{% endif %}">
+          <h4>Robust</h4>
+          <small>IQR based</small>
+        </button>
+        <button type="button" class="option-card {% if pref_scaler == 'none' %}is-active{% endif %}"
+                data-scaler="none" aria-pressed="{% if pref_scaler == 'none' %}true{% else %}false{% endif %}">
+          <h4>None</h4>
+          <small>Leave values as-is</small>
+        </button>
+      </div>
+      <span class="form-text">
+        Defaults come from your <a href="{% url 'user_preference' %}">preferences</a>.
+      </span>
+    </div>
+    {% endwith %}
+
+  </div>
+</div>
+
+<!-- MODEL SELECTION -->
+<div class="section-head">
+  <div>
+    <h2>Train a model</h2>
+    <p>{{ mode }} models suited to your target variable.</p>
+  </div>
+  <span class="pill pill--accent"><i class="bi bi-lightning-charge-fill"></i> {{ models|length }} available</span>
+</div>
+
+<div class="model-grid reveal">
+  {% for m in models %}
+  <a class="model-card" href="#"
+     data-model="{{ m }}"
+     data-url="{% url 'Model_Training' 'DUMMY' %}">
+    <span class="model-card__icon"><i class="bi bi-diagram-3"></i></span>
+    <span>{{ m }}</span>
+    <i class="bi bi-arrow-right model-card__arrow"></i>
+  </a>
+  {% endfor %}
+</div>
+
+{% else %}
+
+<div class="page-head">
+  <span class="page-head__eyebrow">Step 2 of 3</span>
+  <h1>Data Understanding</h1>
+  <p class="page-head__sub">
+    Tell us what you are predicting and we will profile the dataset around it.
+  </p>
+</div>
+
+<div class="card" style="max-width: 520px;">
+  <div class="card__head">
+    <div>
+      <h2>Configure the target</h2>
+      <p>This drives encoding, profiling and the models offered.</p>
+    </div>
+  </div>
+  <form method="post">
+    {% csrf_token %}
+    <div class="card__body">
+
+      <div class="field-group">
+        <label class="form-label" for="targetSelect">Target variable</label>
+        <select id="targetSelect" name="target" class="form-select">
+          {% for col in columnsName %}
+          <option value="{{ col }}">{{ col }}</option>
+          {% endfor %}
+        </select>
+        <span class="form-text">The column the model should learn to predict.</span>
+      </div>
+
+      <div class="field-group">
+        <label class="form-label" for="modeSelect">Problem type</label>
+        <select id="modeSelect" name="mode" class="form-select">
+          <option value="Classification">Classification &mdash; predict a category</option>
+          <option value="Regression">Regression &mdash; predict a number</option>
+        </select>
+      </div>
+
+    </div>
+    <div class="card__foot">
+      <button class="btn btn-primary" type="submit">
+        <i class="bi bi-play-fill"></i> Profile dataset
+      </button>
+    </div>
+  </form>
+</div>
+
+{% endif %}
+
+{% endblock %}

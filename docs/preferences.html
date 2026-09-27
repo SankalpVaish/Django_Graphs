@@ -1,0 +1,211 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Upload a dataset, explore it visually, and train machine learning models with configurable preprocessing.">
+    <title>Preferences &middot; Graphs</title>
+
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;650&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="static/main.css">
+    <link rel="stylesheet" href="static/myfirst.css">
+    
+</head>
+
+<body>
+
+
+<nav class="app-nav navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container-fluid" style="max-width: 1180px;">
+
+        <a class="navbar-brand" href="index.html">
+            <span class="brand-mark"><i class="bi bi-graph-up-arrow"></i></span>
+            Graphs
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#appNav" aria-controls="appNav"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="appNav">
+            
+            <ul class="navbar-nav ms-lg-4 gap-lg-1">
+                <li class="nav-item">
+                    <a class="nav-link "
+                       href="index.html">Analysis</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link "
+                       href="graph.html">Data Understanding</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link "
+                       href="model-training.html">Model Training</a>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item dropdown">
+                    <a class="user-chip dropdown-toggle" href="#" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="user-chip__avatar">d</span>
+                        <span class="d-none d-lg-inline">demo_builder</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li class="dropdown-header">
+                            Signed in as
+                            <strong>demo_builder</strong>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="preferences.html"><i class="bi bi-sliders"></i> Preferences</a></li>
+                        <li><a class="dropdown-item" href="about.html"><i class="bi bi-info-circle"></i> About</a></li>
+                        <li><a class="dropdown-item" href="contact.html"><i class="bi bi-life-preserver"></i> Contact</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form class="logout-form" method="post" action="login.html">
+                                <input type="hidden" name="csrfmiddlewaretoken" value="KkOcXKRlmKkRkquJn7651df0QsG6BF1QRlfwHMrQfx18YrqXOUvmlezm36lStqQJ">
+                                <button type="submit" class="dropdown-item dropdown-item--danger">
+                                    <i class="bi bi-box-arrow-right"></i> Sign out
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            
+        </div>
+    </div>
+</nav>
+
+
+<main class="app-main app-main--narrow">
+<style>
+.demo-note{display:flex;gap:.75rem;align-items:flex-start;padding:.85rem 1.1rem;
+margin-bottom:1.75rem;border:1px solid #fde68a;border-radius:12px;background:#fffbeb;
+color:#92400e;font-size:.875rem;line-height:1.55}
+.demo-note i{margin-top:.15rem}
+.demo-note a{color:#92400e;font-weight:600;text-decoration:underline}
+.demo-toast{position:fixed;left:50%;bottom:1.5rem;transform:translate(-50%,1rem);
+z-index:2000;padding:.7rem 1.1rem;border-radius:10px;background:#0f172a;color:#fff;
+font-size:.875rem;box-shadow:0 12px 32px -12px rgba(15,23,42,.5);opacity:0;
+transition:opacity .25s ease,transform .25s ease;pointer-events:none}
+.demo-toast.is-on{opacity:1;transform:translate(-50%,0)}
+</style>
+<div class="demo-note">
+  <i class="bi bi-info-circle-fill"></i>
+  <div><strong>Static demo.</strong> This is a pre-rendered snapshot hosted on GitHub
+  Pages, so uploading data, training models and signing in are disabled. Browsing,
+  layout and all charts are real output from the app.
+  <a href="https://github.com/SankalpVaish/Django">View the source</a> to run it locally with live data.</div>
+</div>
+
+    
+
+    
+
+<div class="page-head">
+  <span class="page-head__eyebrow">Settings</span>
+  <h1>Preferences</h1>
+  <p class="page-head__sub">
+    Defaults applied to new training runs. You can still override them per run on
+    the data understanding page.
+  </p>
+</div>
+
+<div class="card">
+  <form method="post">
+    <input type="hidden" name="csrfmiddlewaretoken" value="KkOcXKRlmKkRkquJn7651df0QsG6BF1QRlfwHMrQfx18YrqXOUvmlezm36lStqQJ">
+    <div class="card__body">
+
+      <div class="field-group">
+        <div class="split-readout">
+          <label class="form-label mb-0" for="splitSlider">Default test set size</label>
+          <span class="split-readout__value" id="splitValue">20%</span>
+        </div>
+        <input type="range" id="splitSlider" name="split"
+               min="5" max="50" step="5" value="20">
+        <div class="split-scale">
+          <span>5% &mdash; more training data</span>
+          <span>50% &mdash; more validation data</span>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label class="form-label" for="scalerSelect">Default feature scaling</label>
+        <select id="scalerSelect" name="scaler" class="form-select">
+          <option value="minmax" >Min-Max &mdash; rescale to 0 &ndash; 1</option>
+          <option value="standard" selected>Standard &mdash; zero mean, unit variance</option>
+          <option value="robust" >Robust &mdash; interquartile range based</option>
+          <option value="none" >None &mdash; leave values as-is</option>
+        </select>
+        <span class="form-text">
+          Min-Max suits bounded features; Robust is the safer choice when outliers remain.
+        </span>
+      </div>
+
+    </div>
+    <div class="card__foot d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <span style="font-size: 0.8125rem; color: var(--text-muted);">Stored for this session.</span>
+      <button class="btn btn-primary" type="submit">
+        <i class="bi bi-check2"></i> Save preferences
+      </button>
+    </div>
+  </form>
+</div>
+
+
+</main>
+
+<footer class="app-footer">
+    <div class="app-footer__inner">
+        <span>Graphs &middot; an end-to-end machine learning workbench</span>
+        <nav>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <a href="preferences.html">Preferences</a>
+        </nav>
+    </div>
+</footer>
+
+<script crossorigin="anonymous" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="static/app.js" defer></script>
+
+
+<div class="demo-toast" id="demoToast"></div>
+<script>
+(function () {
+  var toast = document.getElementById('demoToast');
+  var timer;
+
+  function say(message) {
+    toast.textContent = message;
+    toast.classList.add('is-on');
+    clearTimeout(timer);
+    timer = setTimeout(function () { toast.classList.remove('is-on'); }, 3200);
+  }
+
+  document.addEventListener('submit', function (event) {
+    event.preventDefault();
+    say('This is a static demo \u2014 run the project locally to submit data.');
+  });
+
+  document.querySelectorAll('input[type="file"]').forEach(function (input) {
+    input.addEventListener('click', function (event) {
+      event.preventDefault();
+      say('File upload needs the Django server \u2014 not available in this demo.');
+    });
+  });
+})();
+</script>
+</body>
+</html>

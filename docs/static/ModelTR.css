@@ -1,0 +1,192 @@
+/* ==========================================================================
+   Graphs — model training page
+   Depends on tokens defined in main.css
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Result header: headline metric beside the model summary
+   -------------------------------------------------------------------------- */
+
+.result-head {
+  display: grid;
+  grid-template-columns: minmax(200px, 260px) minmax(0, 1fr);
+  gap: 0;
+  overflow: hidden;
+}
+
+@media (max-width: 780px) {
+  .result-head {
+    grid-template-columns: 1fr;
+  }
+}
+
+.metric-hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1.6rem 1.5rem;
+  background: linear-gradient(150deg, #1e1b4b 0%, #312e81 60%, #4338ca 100%);
+  color: #e0e7ff;
+}
+
+.metric-hero__label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(199, 210, 254, 0.8);
+}
+
+.metric-hero__value {
+  margin: 0.3rem 0 0;
+  font-size: 2.25rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: #fff;
+}
+
+.metric-hero__hint {
+  margin: 0.45rem 0 0;
+  font-size: 0.75rem;
+  color: rgba(199, 210, 254, 0.72);
+}
+
+.result-summary {
+  padding: 1.5rem;
+}
+
+.result-summary__top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.7rem;
+}
+
+.result-summary h1 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.model-desc {
+  margin: 0;
+  max-width: 70ch;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Chart + explanation rows
+   -------------------------------------------------------------------------- */
+
+.insight {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 1.75rem;
+  align-items: center;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.insight:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.insight:first-child {
+  padding-top: 0;
+}
+
+/* Alternate the image to the right on every second row */
+.insight:nth-child(even) .insight__chart {
+  order: 2;
+}
+
+@media (max-width: 860px) {
+  .insight {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .insight:nth-child(even) .insight__chart {
+    order: 0;
+  }
+}
+
+.insight__chart {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.insight__chart img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.insight__text h3 {
+  margin: 0 0 0.5rem;
+}
+
+.insight__text p {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+/* --------------------------------------------------------------------------
+   Run history table
+   -------------------------------------------------------------------------- */
+
+.score-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.score-table th {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-align: left;
+  color: var(--text-subtle);
+}
+
+.score-table th:last-child,
+.score-table td:last-child {
+  text-align: right;
+}
+
+.score-table td {
+  padding: 0.65rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+
+.score-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.score-table tbody tr:hover td {
+  background: var(--surface-muted);
+}
+
+.score-table .is-current td {
+  background: var(--accent-soft);
+  font-weight: 600;
+}
+
+.score-table__score {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--accent);
+}

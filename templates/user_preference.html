@@ -1,0 +1,58 @@
+{% extends "master.html" %}
+
+{% block title %}Preferences{% endblock %}
+{% block main_class %}app-main--narrow{% endblock %}
+
+{% block content %}
+
+<div class="page-head">
+  <span class="page-head__eyebrow">Settings</span>
+  <h1>Preferences</h1>
+  <p class="page-head__sub">
+    Defaults applied to new training runs. You can still override them per run on
+    the data understanding page.
+  </p>
+</div>
+
+<div class="card">
+  <form method="post">
+    {% csrf_token %}
+    <div class="card__body">
+
+      <div class="field-group">
+        <div class="split-readout">
+          <label class="form-label mb-0" for="splitSlider">Default test set size</label>
+          <span class="split-readout__value" id="splitValue">{{ default_split }}%</span>
+        </div>
+        <input type="range" id="splitSlider" name="split"
+               min="5" max="50" step="5" value="{{ default_split }}">
+        <div class="split-scale">
+          <span>5% &mdash; more training data</span>
+          <span>50% &mdash; more validation data</span>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label class="form-label" for="scalerSelect">Default feature scaling</label>
+        <select id="scalerSelect" name="scaler" class="form-select">
+          <option value="minmax" {% if scaler == "minmax" %}selected{% endif %}>Min-Max &mdash; rescale to 0 &ndash; 1</option>
+          <option value="standard" {% if scaler == "standard" %}selected{% endif %}>Standard &mdash; zero mean, unit variance</option>
+          <option value="robust" {% if scaler == "robust" %}selected{% endif %}>Robust &mdash; interquartile range based</option>
+          <option value="none" {% if scaler == "none" %}selected{% endif %}>None &mdash; leave values as-is</option>
+        </select>
+        <span class="form-text">
+          Min-Max suits bounded features; Robust is the safer choice when outliers remain.
+        </span>
+      </div>
+
+    </div>
+    <div class="card__foot d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <span style="font-size: 0.8125rem; color: var(--text-muted);">Stored for this session.</span>
+      <button class="btn btn-primary" type="submit">
+        <i class="bi bi-check2"></i> Save preferences
+      </button>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends "master.html" %}
+
+{% block title %}About{% endblock %}
+
+{% block content %}
+
+<div class="page-head">
+  <span class="page-head__eyebrow">About</span>
+  <h1>An end-to-end machine learning workbench</h1>
+  <p class="page-head__sub">
+    Graphs is a learning-focused tool for working through the full machine
+    learning workflow &mdash; from a raw CSV to a trained, evaluated model.
+  </p>
+</div>
+
+<div class="card">
+  <div class="card__body prose">
+    <p>
+      Upload a dataset, explore it visually, and train models with configurable
+      preprocessing. Every step is designed to show <strong>what</strong> happened and
+      <strong>why</strong> it matters, rather than hiding the workflow behind a single button.
+    </p>
+
+    <h2>What you can do</h2>
+    <ul class="feature-grid">
+      <li>
+        <i class="bi bi-bar-chart-line"></i>
+        <strong>Exploratory analysis</strong>
+        <span>Scatter, line, bar and histogram plots across any pair of columns.</span>
+      </li>
+      <li>
+        <i class="bi bi-box"></i>
+        <strong>Outlier handling</strong>
+        <span>Spot outliers on a boxplot and clip them to the column mean in one click.</span>
+      </li>
+      <li>
+        <i class="bi bi-grid-3x3"></i>
+        <strong>Correlation profiling</strong>
+        <span>See how strongly numerical features move together before modelling.</span>
+      </li>
+      <li>
+        <i class="bi bi-sliders"></i>
+        <strong>Configurable preprocessing</strong>
+        <span>Choose your scaler and train/test split, then compare the effect.</span>
+      </li>
+      <li>
+        <i class="bi bi-diagram-3"></i>
+        <strong>Model comparison</strong>
+        <span>Six classification and six regression algorithms, scored side by side.</span>
+      </li>
+      <li>
+        <i class="bi bi-clipboard-data"></i>
+        <strong>Readable diagnostics</strong>
+        <span>Learning curves, complexity curves and feature importance, explained.</span>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="section-head">
+  <div>
+    <h2>About the developer</h2>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card__body prose">
+    <p>
+      Developed by Leon Smith, a data scientist and software developer working on
+      making machine learning accessible and understandable.
+    </p>
+    <p>
+      Connect on
+      <a href="https://www.linkedin.com/in/leonsmith" target="_blank" rel="noopener">LinkedIn</a>
+      or browse the projects on
+      <a href="https://github.com/leonsmith" target="_blank" rel="noopener">GitHub</a>.
+    </p>
+  </div>
+</div>
+
+{% endblock %}

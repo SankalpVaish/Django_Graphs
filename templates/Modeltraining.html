@@ -1,0 +1,202 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block title %}{{ name }}{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'ModelTR.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<a class="back-link" href="{% url 'GraphPage' %}">
+  <i class="bi bi-arrow-left"></i> Back to data understanding
+</a>
+
+<div class="page-head">
+  <span class="page-head__eyebrow">Step 3 of 3</span>
+  <h1>Model Training</h1>
+  <p class="page-head__sub">
+    Results for the most recent run, with a comparison against every model you
+    have trained on this dataset.
+  </p>
+</div>
+
+<!-- HEADLINE RESULT -->
+<div class="card result-head">
+  <div class="metric-hero">
+    {% if mode == "Classification" %}
+    <span class="metric-hero__label">Accuracy</span>
+    <p class="metric-hero__value">{{ MSE|floatformat:4 }}</p>
+    <p class="metric-hero__hint">Share of correct predictions on the test set</p>
+    {% else %}
+    <span class="metric-hero__label">Mean squared error</span>
+    <p class="metric-hero__value">{{ MSE|floatformat:4 }}</p>
+    <p class="metric-hero__hint">Average squared prediction error &mdash; lower is better</p>
+    {% endif %}
+  </div>
+
+  <div class="result-summary">
+    <div class="result-summary__top">
+      <h1>{{ name }}</h1>
+      <span class="pill pill--accent">{{ mode }}</span>
+    </div>
+
+    <p class="model-desc">
+      {% if name == "Linear Regression" %}
+        Linear Regression is a fundamental regression algorithm that models the relationship between input features and a continuous target variable by fitting a straight line. It assumes a linear dependency between variables and minimizes the sum of squared errors. It is simple, fast, and interpretable, making it ideal for baseline modeling and understanding feature influence.
+
+      {% elif name == "Random Forset Regressor" %}
+        Random Forest Regressor follows the same ensemble principle as its classifier counterpart but predicts continuous values by averaging outputs from multiple decision trees. It captures complex non-linear relationships and interactions between features while maintaining strong generalization performance. It performs well even when feature scaling is not applied.
+
+      {% elif name == "Support Vector Regressor" %}
+        Support Vector Regressor applies the principles of SVM to regression tasks. Instead of minimizing prediction error directly, SVR fits a function within a defined margin of tolerance. It is effective in modeling complex relationships while being robust to outliers, especially when appropriate kernel functions are used.
+
+      {% elif name == "Decision Tree Regressor" %}
+        Decision Tree Regressor predicts continuous values by partitioning the feature space into regions and assigning the mean target value to each region. It captures non-linear patterns and feature interactions effectively but may overfit if the tree becomes too deep without proper pruning.
+
+      {% elif name == "Naive Bayes" %}
+        Naive Bayes is a probabilistic algorithm based on Bayes&rsquo; theorem, assuming conditional independence between features. Despite this strong assumption, it performs surprisingly well in text classification, spam detection, and high-dimensional datasets. It is extremely fast, memory-efficient, and works well with small datasets.
+
+      {% elif name == "KNeighborsRegressor" %}
+        KNN Regressor predicts continuous values by averaging the outputs of the nearest neighboring data points. It adapts naturally to local patterns in data but becomes computationally expensive for large datasets. Proper feature scaling is crucial for good performance.
+
+      {% elif name == "Logistic Regression" %}
+        Logistic Regression is a supervised classification algorithm that predicts the probability of a binary outcome using a sigmoid (logistic) function. Despite its name, it is used for classification tasks and works well when the relationship between features and log-odds is approximately linear. It is efficient, interpretable, and performs well on linearly separable data.
+
+      {% elif name == "Random Forset Classifier" %}
+        Random Forest Classifier is an ensemble learning method that builds multiple decision trees on randomly sampled subsets of data and features. The final prediction is made by majority voting. This approach reduces overfitting, improves generalization, and handles high-dimensional data effectively. It is robust to noise and widely used in real-world classification problems.
+
+      {% elif name == "Support Vector Machine" %}
+        Support Vector Machine is a powerful classification algorithm that finds the optimal hyperplane separating classes with the maximum margin. It can handle both linear and non-linear data using kernel functions. SVMs are effective in high-dimensional spaces and are particularly useful when the number of features is large compared to the number of samples.
+
+      {% elif name == "Decision Tree Classifier" %}
+        Decision Tree Classifier builds a tree-like structure by recursively splitting data based on feature thresholds that maximize information gain. It is easy to interpret and visualize, making it suitable for explainable AI. However, single trees are prone to overfitting, which is why they are often combined in ensemble models.
+
+      {% elif name == "KNeighborsClassifier" %}
+        KNN Classifier is an instance-based learning algorithm that classifies a data point based on the majority class of its nearest neighbors. It does not require training but relies heavily on distance metrics and feature scaling. It is intuitive and effective for simple classification tasks with well-separated classes.
+
+      {% else %}
+        This model applies machine learning techniques to learn patterns from
+        data and generate predictions.
+      {% endif %}
+    </p>
+  </div>
+</div>
+
+<!-- DIAGNOSTIC CHARTS -->
+<div class="section-head">
+  <div>
+    <h2>Diagnostics</h2>
+    <p>How this run behaves, and what the charts tell you.</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card__body">
+
+    <div class="insight reveal">
+      <div class="insight__chart">
+        <img src="{% static loc %}?v={% now 'U' %}" alt="Bar chart comparing scores across trained models">
+      </div>
+      <div class="insight__text">
+        <h3>Score comparison across models</h3>
+        <p>
+          Each bar is one model you have trained on this dataset with the current
+          preprocessing settings. Use it to see which algorithm suits the data
+          before you invest in tuning &mdash; a large gap usually says more about the
+          data than the hyperparameters.
+        </p>
+      </div>
+    </div>
+
+    <div class="insight reveal">
+      <div class="insight__chart">
+        <img src="{% static 'images/comparison/CostVSm.jpeg' %}?v={% now 'U' %}"
+             alt="Cost plotted against training set size">
+      </div>
+      <div class="insight__text">
+        <h3>Cost against training set size</h3>
+        <p>
+          A learning curve. If the training and validation costs converge at a high
+          value, the model is underfitting and needs more capacity. If they stay far
+          apart, it is overfitting and more data or stronger regularisation will help.
+        </p>
+      </div>
+    </div>
+
+    <div class="insight reveal">
+      <div class="insight__chart">
+        <img src="{% static 'images/comparison/CostVSpoly.jpeg' %}?v={% now 'U' %}"
+             alt="Cost plotted against polynomial degree">
+      </div>
+      <div class="insight__text">
+        <h3>Cost against model complexity</h3>
+        <p>
+          Increasing the polynomial degree lets the model bend to fit the data. The
+          lowest point on the validation curve is the sweet spot; past it, extra
+          complexity fits noise rather than signal.
+        </p>
+      </div>
+    </div>
+
+    <div class="insight reveal">
+      <div class="insight__chart">
+        <img src="{% static 'images/comparison/Importance.jpeg' %}?v={% now 'U' %}"
+             alt="Ranked feature importance scores">
+      </div>
+      <div class="insight__text">
+        <h3>Feature importance</h3>
+        <p>
+          Features ranked by their contribution to the prediction. The top few
+          usually carry most of the signal, which makes this a practical shortlist
+          for feature selection &mdash; and a sanity check that the model is not leaning
+          on something it should not see.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- RUN HISTORY -->
+<div class="section-head">
+  <div>
+    <h2>Run history</h2>
+    <p>Every model trained in this session, most recent last.</p>
+  </div>
+</div>
+
+<div class="card reveal">
+  {% if prev_model_tuples %}
+  <table class="score-table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Model</th>
+        <th scope="col">{% if mode == "Classification" %}Accuracy{% else %}MSE{% endif %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for model_name, accuracy in prev_model_tuples %}
+      <tr {% if forloop.last %}class="is-current"{% endif %}>
+        <td style="color: var(--text-subtle);">{{ forloop.counter }}</td>
+        <td>
+          {{ model_name }}
+          {% if forloop.last %}<span class="pill pill--accent ms-2">Latest</span>{% endif %}
+        </td>
+        <td class="score-table__score">{{ accuracy|floatformat:4 }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty">
+    <div class="empty__icon"><i class="bi bi-clock-history"></i></div>
+    <h3>No runs yet</h3>
+    <p>Train a model from the data understanding page to start building a comparison.</p>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock %}

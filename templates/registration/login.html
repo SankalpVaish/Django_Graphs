@@ -1,0 +1,44 @@
+{% extends "master.html" %}
+{% load bootstrap5 %}
+
+{% block title %}Sign in{% endblock %}
+
+{% block content %}
+<div class="auth-shell">
+
+  <div class="auth-aside">
+    <h2>Explore your data, end to end.</h2>
+    <p>Upload a CSV and move from raw columns to a trained model without writing a line of code.</p>
+    <ul>
+      <li><i class="bi bi-check-circle-fill"></i> <span>Automatic profiling: distributions, outliers and correlations</span></li>
+      <li><i class="bi bi-check-circle-fill"></i> <span>Configurable scaling and train/test splits</span></li>
+      <li><i class="bi bi-check-circle-fill"></i> <span>Train and compare six models side by side</span></li>
+      <li><i class="bi bi-check-circle-fill"></i> <span>Readable diagnostics for every run</span></li>
+    </ul>
+  </div>
+
+  <div class="auth-card">
+    <div class="auth-card__head">
+      <h1>Sign in</h1>
+      <p>Welcome back. Enter your details to continue.</p>
+    </div>
+
+    <form method="post">
+      {% csrf_token %}
+      {% bootstrap_form form %}
+
+      <a class="auth-forgot" href="{% url 'password_reset' %}">Forgot your password?</a>
+
+      <button class="btn btn-primary btn-block" type="submit">
+        <i class="bi bi-box-arrow-in-right"></i> Sign in
+      </button>
+    </form>
+
+    <div class="auth-meta">
+      <span>Don&rsquo;t have an account?</span>
+      <a href="{% url 'signup' %}">Create one</a>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
